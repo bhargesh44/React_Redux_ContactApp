@@ -53,8 +53,10 @@ const Home = () => {
   const classes = useStyles();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [birthDate, setBirthDate] = useState("");
-
+  const [birthDate, setBirthDate] = useState(null);
+  const clearDate = () => {
+    setBirthDate(null);
+  };
   const contacts = useSelector((state) => state);
   const dispatch = useDispatch();
   const deleteContact = (id) => {
@@ -97,6 +99,15 @@ const Home = () => {
           />
         </LocalizationProvider>
         <Button
+          color="secondary"
+          variant="contained"
+          title="Clear Date"
+          onClick={clearDate}
+        >
+          {" "}
+          Clear Date{" "}
+        </Button>
+        <Button
           color="primary"
           variant="contained"
           title="Add Contact"
@@ -121,10 +132,10 @@ const Home = () => {
         <TableBody>
           {contacts
             .filter((contact) => {
-              if (searchTerm === "" && birthDate === "") {
+              if (searchTerm === "" && birthDate === null) {
                 return contact;
               } else if (
-                contact.birthDate.includes(birthDate) &&
+                (contact.birthDate.includes(birthDate) || birthDate === null )&&
                 contact.name.toLowerCase().includes(searchTerm.toLowerCase())
               ) {
                 return contact;
